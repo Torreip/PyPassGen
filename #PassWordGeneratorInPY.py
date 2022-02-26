@@ -17,7 +17,19 @@ def clear():
 
 #Generation Fonction And Subordinate
 def gen():
-    print("the generation fonction as been called")#placeholder
+    global email
+    name = input("What's the service name ? ")
+    print(email)
+    email_choice = 0
+    print("what email should be used for the ",name, "site or app ?")
+    while email_choice > len(email) or email_choice < 1:
+        try:
+            email_choice = int(input())
+        except ValueError:
+            print("invalid input ")
+    print(email[email_choice])
+    
+
 
 def dataRead():
     global email
@@ -43,50 +55,55 @@ def emailAdd():
     data_email = open("data.dbeml", "a+")
     userEmail = input("What email should be added ? ")
     data_email.write(userEmail+"\n")
-    email = data_email.readlines()
     data_email.flush()
     os.fsync(data_email.fileno())
+    email = data_email.readlines()
     data_email.close
 
 def dataFill():
     global email
-    data_email = open("data.dbeml", "r")
-    email = data_email.readlines()
-    data_email.close
     if email == 0:
         print("Let's populate that file with it's first data !")
         print("The email should be writed as such : user@example.com")
         emailAdd()
+        menu()
     else:
+        data_email = open("data.dbeml", "r")
+        email = data_email.readlines()
+        data_email.close
         print("Welcome to the Data Filling Utility (DFU)")
         print("You curently have", len(email), "Registered in your file")
         print(email)
         try: 
             c2 = input("Make your choice (Y or n) ")
+            c2 = c2.lower()
+
         except ValueError:
             print("invalid input")
         else:
             while c2 == "y" or c2 == "ye" or c2 == "yes":
                 emailAdd()
-                c2 = input("Do you want to continue (Y or n) ? ")
+                c2 = input("Do you want to continue (Yes or no) ? ")
+                c2 = c2.lower()
             else:
                 clear()
                 menu()
-    data_email.close
 
 #Menu Fonction And Subordinate
 def menu():
     print("     [1] Generate a Password")
     print("     [2] Populate The email file")
-    print("     [3] Info")
-    print("     [4] Quit")
+    print("     [3] Manipulate The email file")
+    print("     [4] Info")
+    print("     [5] Quit")
+    print("\x1b[1;31;31m     [9] Delete The email data file \x1b[0m")
     #WIP Thinking about adding a 5th an 6th menu opytion (Delete a file and manipulate the file itself changing order delete ect)
 
     while True:
         try: 
-            c1 = int(input("Make your choice (between 1 and 4) "))
+            c1 = int(input("Make your choice (between 1 and 5 or 9) "))
         except ValueError:
-            print("invalid input, please select a number between 1 and 4. ")
+            print("invalid input, please select a number between 1 and 5 or 9. ")
         else:
             if c1 == 1:
                 gen()
@@ -94,17 +111,41 @@ def menu():
                 print("Welcome to the Data Filling Utility (DFU)")
                 dataFill()
             elif c1 == 3:
+                print("WIP WIP WIP MANIPULATION OF DATA FILE")
+            elif c1 == 4:
                 print("This python script as for utility to automaticly create and store password into a text file\nIt use the storing method the creator use tho you can modify this script as much as you want to better fit you.")
                 print("Signed Torreip 2022")
                 time.sleep(7.5)
                 clear()
                 menu()
-            elif c1 == 4:
+            elif c1 == 5:
                 print("Thank's for using my script !")
                 time.sleep(2)
                 sys.exit()
+            elif c1 == 9:
+                print("\x1b[1;31;31mThis Action Will Delete every bit of data in the data.dbeml file. This can't be reversed\x1b[0m")
+                try: 
+                    c3 = input("Make your choice (Yes or no) ")
+                except ValueError:
+                    print("invalid input")
+                else:
+                    c3 = c3.lower()
+                    if c3 == "y" or c3 == "ye" or c3 == "yes":
+                        if os.path.exists("data.dbeml"):
+                            print("\x1b[1;31;31mNUKE PROCEDURE ENGAGED\x1b[0m")
+                            os.remove("data.dbeml")
+                            print("Thank's for using my script !")
+                            time.sleep(2)
+                            sys.exit()
+                        else:
+                            print("An error occured the program will now close please restart it and select the 9th option again.")
+                            time.sleep(5)
+                            sys.exit
+                    else:
+                        clear()
+                        menu()
             elif c1 == 507444126:
-                print("Even tho the option wasen't presented you found it !")
+                print("Even tho the option wasn't presented you found it !")
                 print("I congratulate you, you found this easter egg.")
                 print("Torreip")
 
