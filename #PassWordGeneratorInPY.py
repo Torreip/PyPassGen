@@ -3,6 +3,8 @@ from os import sep, system, name, fsync
 import os
 import time
 import sys
+import random
+import pyperclip
 
 #Global Variable
 global email
@@ -15,21 +17,30 @@ def clear():
         _ = system("clear")
 
 
-#Generation Fonction And Subordinate
+#Options Function
+def options():
+    pass
+
+#Generation Function And Subordinate
 def gen():
     global email
     name = input("What's the service name ? ")
-    print(email)
-    email_choice = 0
+    print(email)#should dispear with only 1 choice
+    email_choice = -1
     print("what email should be used for the ",name, "site or app ?")
-    while email_choice > len(email) or email_choice < 1:
+    while email_choice > len(email) or email_choice < 0:
         try:
-            email_choice = int(input())
+            email_choice = int(input())-1
         except ValueError:
             print("invalid input ")
-    print(email[email_choice])
+    chars = "#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';"#MAIN charslist.
+    chartest = list(chars)
+    pwd = random.choices(chartest, k=16) #change lenght of pass here
+    pyperclip.copy("".join(pwd))
+    filePwd()
     
-
+def filePwd():
+    pass#addition to a file.
 
 def dataRead():
     global email
@@ -94,31 +105,33 @@ def menu():
     print("     [1] Generate a Password")
     print("     [2] Populate The email file")
     print("     [3] Manipulate The email file")
-    print("     [4] Info")
-    print("     [5] Quit")
-    print("\x1b[1;31;31m     [9] Delete The email data file \x1b[0m")
+    print("     [4] Options")
+    print("     [5] Info")
+    print("     [6] Quit")
+    print("\33[1;31;31m     [9] Delete The email data file \33[0m")
     #WIP Thinking about adding a 5th an 6th menu opytion (Delete a file and manipulate the file itself changing order delete ect)
 
     while True:
         try: 
-            c1 = int(input("Make your choice (between 1 and 5 or 9) "))
+            c1 = int(input("Make your choice (between 1 and x or 9) "))
         except ValueError:
-            print("invalid input, please select a number between 1 and 5 or 9. ")
+            print("invalid input, please select a number between 1 and x or 9. ")
         else:
             if c1 == 1:
                 gen()
             elif c1 == 2:
-                print("Welcome to the Data Filling Utility (DFU)")
                 dataFill()
             elif c1 == 3:
-                print("WIP WIP WIP MANIPULATION OF DATA FILE")
+                print("WIP WIP WIP MANIPULATION OF DATA FILE")#WIP
             elif c1 == 4:
+                options()#WIP
+            elif c1 == 5:
                 print("This python script as for utility to automaticly create and store password into a text file\nIt use the storing method the creator use tho you can modify this script as much as you want to better fit you.")
                 print("Signed Torreip 2022")
                 time.sleep(7.5)
                 clear()
                 menu()
-            elif c1 == 5:
+            elif c1 == 6:
                 print("Thank's for using my script !")
                 time.sleep(2)
                 sys.exit()
@@ -132,7 +145,7 @@ def menu():
                     c3 = c3.lower()
                     if c3 == "y" or c3 == "ye" or c3 == "yes":
                         if os.path.exists("data.dbeml"):
-                            print("\x1b[1;31;31mNUKE PROCEDURE ENGAGED\x1b[0m")
+                            print("\33[1;31;31mNUKE PROCEDURE ENGAGED\33[0m")
                             os.remove("data.dbeml")
                             print("Thank's for using my script !")
                             time.sleep(2)
@@ -149,7 +162,7 @@ def menu():
                 print("I congratulate you, you found this easter egg.")
                 print("Torreip")
 
-
+#TO IMPROVE REDABILITY ==> Switch menu to case statement.
 
 #General Code
 
